@@ -1,7 +1,7 @@
 ## Pivotal Cloud Foundry Partners Template
 
 This is now the readme for the Hazelcast PRODUCT-NAME tile.
-Re-purpose this readme for Hazelcast PRODUCT-NAME.
+You can re-purpose this readme for Hazelcast PRODUCT-NAME after the draft of the documentation has been completed.
 
 This template helps partners prepare documentation for Pivotal Cloud Foundry (PCF) partner services that appear on [Pivotal Network](https://network.pivotal.io/). 
 
