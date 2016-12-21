@@ -1,12 +1,25 @@
 ---
-title: Using YOUR-PRODUCT-NAME
+title: Using Hazelcast for PCF
 owner: Partners
 ---
 
-This topic describes how to use YOUR-PRODUCT-NAME.
+This topic describes how to use Hazelcast for PCF.
 
-##<a id='using'></a> Using YOUR-PRODUCT-NAME
+##<a id='using'></a> Using Hazelcast for PCF
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. Give procedures for how to perform the different functions offered by your product, and provide screenshots where necessary.** 
+After installing Hazelcast for PCF tile, it'll register itself to the marketplace automatically.
+Use `cf marketplace` command to check availability of Hazelcast for PCF.
 
-**You can also use this section to include information about Architecture and Troubleshooting for known errors. If you include a Troubleshooting section, follow the Symptom/Explanation format used in the [Okta Troubleshooting](http://docs.pivotal.io/p-identity/okta/troubleshooting.html) topic**.
+<%= image_tag("marketplace.png") %>
+
+Create a cluster by using `cf create-service hazelcast [PLAN] [SERVICE_INSTANCE_NAME]` command.
+
+<%= image_tag("cf_cs.png") %>
+
+After creating the service, you can bind it to your app and start using Hazelcast IMDG.
+
+```
+$ cf bind-service my-application [SERVICE_INSTANCE_NAME]
+$ cf restage my-application
+```
+
