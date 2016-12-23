@@ -16,8 +16,8 @@ public_host: hello
 sections:
   - repository:
       name: docs-content
-    directory: myservice
-    subnav_template: myservice_subnav.erb       
+    directory: hazelcast
+    subnav_template: hazelcast_subnav.erb       
 
 template_variables:                             # optional
 

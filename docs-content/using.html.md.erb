@@ -5,21 +5,32 @@ owner: Partners
 
 This topic describes how to use Hazelcast for PCF.
 
-##<a id='using'></a> Using Hazelcast for PCF
+##<a id='using'></a> Use Hazelcast for PCF
 
-After installing Hazelcast for PCF tile, it'll register itself to the marketplace automatically.
-Use `cf marketplace` command to check availability of Hazelcast for PCF.
+After installing Hazelcast for PCF tile, it automatically registers itself to the marketplace.
 
-<%= image_tag("marketplace.png") %>
+1. To check availability of Hazelcast for PCF, enter the following command:
 
-Create a cluster by using `cf create-service hazelcast [PLAN] [SERVICE_INSTANCE_NAME]` command.
+    ```
+    $ cf marketplace
+    ```
+    For example, 
+    <%= image_tag("marketplace.png") %>
 
-<%= image_tag("cf_cs.png") %>
+2. To create a cluster, enter the following command:
+  
+    ```
+    $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME
+    ```
+    For example, 
+    <%= image_tag("cf_cs.png") %>
 
-After creating the service, you can bind it to your app and start using Hazelcast IMDG.
+3. Bind the service to your app.
 
-```
-$ cf bind-service my-application [SERVICE_INSTANCE_NAME]
-$ cf restage my-application
-```
+    ```
+    $ cf bind-service MY-APPLICATION [SERVICE_INSTANCE_NAME]
+    $ cf restage MY-APPLICATION
+    ```
+
+4. Start using Hazelcast IMDG.
 

@@ -3,18 +3,18 @@
   ".": 
 :production_host: hello
 :subnav_templates:
-  myservice: myservice_subnav
+  hazelcast: hazelcast_subnav
 :template_variables: 
-:local_repo_dir: "/Users/emrah/Development/cloud-foundry/docs-hazelcast"
+:local_repo_dir: "/Users/jday/workspace/docs-hazelcast"
 :workspace: !ruby/object:Pathname
-  path: "/Users/emrah/Development/cloud-foundry/docs-hazelcast/docs-book/output/master_middleman/source"
+  path: "/Users/jday/workspace/docs-hazelcast/docs-book/output/master_middleman/source"
 :feedback_enabled: 
 :repo_link_enabled: true
 :repo_links:
-  myservice:
+  hazelcast:
     repo: docs-content
     ref: master
     at_path: 
 :product_info:
-  myservice: {}
+  hazelcast: {}
 :elastic_search: false
