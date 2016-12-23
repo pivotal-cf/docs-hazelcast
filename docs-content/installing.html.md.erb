@@ -1,24 +1,65 @@
 ---
-title: Installing and Configuring YOUR-PRODUCT-NAME
+title: Installing and Configuring Hazelcast for PCF
 owner: Partners
 ---
 
-This topic describes how to install and configure YOUR-PRODUCT-NAME.
+This topic describes how to install and configure Hazelcast for PCF.
 
-##<a id='install'></a> Install and Configure YOUR-PRODUCT-NAME
+##<a id='install'></a> Install Hazelcast for PCF
 
 1. Download the product file from Pivotal Network.
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
 
-1. Click **Add** next to the uploaded YOUR-PRODUCT-NAME tile in the Ops Manager **Available Products** view to add it to your staging area.
+1. Click **Add** next to the uploaded Hazelcast for PCF tile in the Ops Manager **Available Products** view to add it to your staging area.
 
-1. Click the newly added **YOUR-PRODUCT-NAME** tile.
+1. Click the newly added **Hazelcast for PCF** tile.
 
-1. **This portion of the procedure should tell the users how to configure the newly added tile by walking them through the sections. Which fields should they fill out? What are the different checkboxes? Include relevant screenshots here.** 
+<%= image_tag("tile.png") %>
+
+##<a id='configure'></a> Configure Hazelcast for PCF
+
+###Assign AZs and Networks
+
+<%= image_tag("az.png") %>
+
+1. Select Assign AZs and Networks to specify the Availability Zones. Select **Network** into which Ops Manager should deploy the Hazelcast Service Broker and
+select **Service Network** into which Ops Manager should create virtual machines for Hazelcast.
 
 1. Click **Save**.
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install YOUR-PRODUCT-NAME tile.
+###Creating Service Plans
 
-**If needed, include additional configuration information below. For example, maybe there are configuration options not required for installation but which could be useful for certain users.**
+Hazelcast for PCF allows you to specify three different service plans, modify these service plans according to your needs and click **Save**.
+
+####First Service Plan
+
+<%= image_tag("first_plan.png") %>
+
+####Second Service Plan
+
+<%= image_tag("second_plan.png") %>
+
+####Third Service Plan
+
+<%= image_tag("third_plan.png") %>
+
+###Errands
+
+<%= image_tag("errands.png") %>
+
+Make sure that both **Register on-demand broker** and **Deregister on-demand broker** checkboxes are checked. These are necessary to create/destroy Hazelcast service instances properly.
+
+###Resource Config
+
+<%= image_tag("resource_config.png") %>
+
+**Resource Config** should be already filled by defaults. No modifications are necessary.
+
+###Stemcell
+
+<%= image_tag("stemcell.png") %>
+
+Please make sure that required stemcell is imported.
+
+Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install Hazelcast for PCF tile.
