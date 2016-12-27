@@ -3,11 +3,15 @@ title: Using Hazelcast for PCF
 owner: Partners
 ---
 
-This topic describes how to use Hazelcast for PCF.
+This topic describes how developers use Hazelcast for Pivotal Cloud Foundry (PCF).
 
-##<a id='using'></a> Use Hazelcast for PCF
+After your PCF operator installs the Hazelcast for PCF tile, it automatically registers itself to the marketplace. 
 
-After installing Hazelcast for PCF tile, it automatically registers itself to the marketplace.
+Follow these steps to create an instance of the Hazelcast service based on an available plan and bind it to your app. 
+The plans available to you are determined by your PCF operator. 
+For more information about configuring plans, see [Installing and Configuring Hazelcast for PCF](installing.html).
+
+<a id="marketplace"></a>
 
 1. To check availability of Hazelcast for PCF, enter the following command:
 
@@ -15,7 +19,15 @@ After installing Hazelcast for PCF tile, it automatically registers itself to th
     $ cf marketplace
     ```
     For example, 
-    <%= image_tag("marketplace.png") %>
+
+    <pre class="terminal">
+$ cf marketplace 
+Getting services from marketplace in org system / space system as admin... 
+OK<br>
+service         plans                            description 
+app-autoscaler 	bronze, gold                     Scales bound applications in response to load (beta) 
+hazelcast       t2.micro, t2.small, m3.medium    Hazelcast Service 
+    </pre>
 
 2. To create a cluster, enter the following command:
   
@@ -23,14 +35,24 @@ After installing Hazelcast for PCF tile, it automatically registers itself to th
     $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME
     ```
     For example, 
-    <%= image_tag("cf_cs.png") %>
+    <pre class="terminal">
+$ cf create-service hazelcast t2.micro micro-cluster
+Creating service instance micro-cluster in org system / space system as admin...
+OK<br> 
+Create in progress. Use 'cf services' or 'cf service micro-cluster' to check operation status. 
+    </pre>
 
-3. Bind the service to your app.
+3. To bind the service to your app, enter the following commands:
 
     ```
-    $ cf bind-service MY-APPLICATION [SERVICE_INSTANCE_NAME]
+    $ cf bind-service MY-APPLICATION SERVICE_INSTANCE_NAME
     $ cf restage MY-APPLICATION
     ```
+    For example,
+    <pre class="terminal">
+$ cf bind-service myapp micro-cluster
+$ cf restage myapp
+    </pre>
 
-4. Start using Hazelcast IMDG.
+4. Start using the Hazelcast in-memory data grid (IMDG).
 
