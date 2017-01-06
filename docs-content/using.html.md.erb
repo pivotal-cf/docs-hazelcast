@@ -29,18 +29,23 @@ app-autoscaler 	bronze, gold                     Scales bound applications in re
 hazelcast       t2.micro, t2.small, m3.medium    Hazelcast Service 
     </pre>
 
+<a id="create-service"></a>
+
 2. To create a cluster, enter the following command:
   
     ```
-    $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME
+    $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME -c hazelcast.json
     ```
     For example, 
     <pre class="terminal">
-$ cf create-service hazelcast t2.micro micro-cluster
+$ cf create-service hazelcast t2.micro micro-cluster -c hazelcast.json
 Creating service instance micro-cluster in org system / space system as admin...
 OK<br> 
 Create in progress. Use 'cf services' or 'cf service micro-cluster' to check operation status. 
     </pre>
+
+    You need to pass your license key and all other Hazelcast cluster options in JSON format. A sample JSON file
+    can be found [here](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) for details.
 
 3. To bind the service to your app, enter the following commands:
 
@@ -54,5 +59,7 @@ $ cf bind-service myapp micro-cluster
 $ cf restage myapp
     </pre>
 
-4. Start using the Hazelcast in-memory data grid (IMDG).
+4. Start using the Hazelcast in-memory data grid (IMDG). Necessary parameters are passed to your application in
+ `VCAP_SERVICES` environment variable. Please refer to [this sample Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration)
+ for further information.
 

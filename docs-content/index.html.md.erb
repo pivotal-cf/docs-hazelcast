@@ -34,7 +34,8 @@ Features of Hazelcast for PCF include the following:
 
 ## <a id="limitations"></a>Limitations
 
-
+- You can dynamically scale in/out your Hazelcast cluster by updating `instanceCount` parameter in your JSON configuration
+but be aware that you'll lose cluster data if you change `managementCenterConfig` in your JSON configuration file.
 
 ## <a id="feedback"></a>Feedback
 
