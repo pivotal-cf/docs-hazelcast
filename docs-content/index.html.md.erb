@@ -34,7 +34,7 @@ Features of Hazelcast for PCF include the following:
 
 ## <a id="limitations"></a>Limitations
 
-If you change `managementCenterConfig` in your JSON configuration file, you will lose cluster data.
+If you change `managementCenterConfig` in your JSON configuration file, then all VMs are shutdown at the same time. This means that you lose all the cluster data unless you are persisting that data elsewhere.
 
 ## <a id="feedback"></a>Feedback
 
