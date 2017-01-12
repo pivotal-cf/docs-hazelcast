@@ -17,21 +17,21 @@ Complete the following steps to download and install the Hazelcast for PCF tile 
 
     <%= image_tag("tile.png") %>
 
-1. Click **Assign AZs and Networks** and in the **AZ and Network Assignments** pane, do the following:
+1. Click **Assign AZs and Networks**. In the **AZ and Network Assignments** pane, do the following:
     1. Select the **Network** in which to deploy the Hazelcast Service Broker.
     1. Select the **Service Network** in which to create VMs for Hazelcast.
     1. Click **Save**.
     <%= image_tag("az.png") %>
 
 
-1. Click **First On-demand plan** and in the **Hazelcast on-demand plan** pane, do the following:
+1. Click **First On-demand plan**. In the **Hazelcast on-demand plan** pane, do the following:
     1. Enter a **Plan name**.
     1. Enter a **Plan description**.
 
-        For an example of how the plan name and description appear on the command line, see [Step&nbsp;1](using.html#marketplace).
+        For an example of how the plan name and description appear on the command line, see [Step&nbsp;1](using.html#marketplace) in the _Using Hazelcast for PCF_ topic.
 
     1. Specify the number of **Hazelcast instances** for this plan. This property defines the number of Hazelcast instances to be created.
-     It can be overridden for each service instance while creating a service instance by using `instanceCount` parameter, see [Step&nbsp;2](using.html#create-service).
+     It can be overridden for each service instance when creating a service instance by using `instanceCount` parameter. See [Step&nbsp;2](using.html#create-service) in the _Using Hazelcast for PCF_ topic for more information.
     1. Select a **Hazelcast VM type**. Choose a suitable VM type according to your data size and processing power requirements.
     1.  If you are planning on using features like [Hot Restart](http://docs.hazelcast.org/docs/3.7/manual/html-single/index.html#hot-restart-persistence) that require a persistent disk, select a **Hazelcast Disk type**. Otherwise, you can leave this option empty because Hazelcast, by default, does not require a persistent disk. 
     1. Select the **Hazelcast availability zone(s)** in which to create VMs for this plan. 

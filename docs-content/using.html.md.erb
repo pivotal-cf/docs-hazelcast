@@ -31,7 +31,7 @@ hazelcast       t2.micro, t2.small, m3.medium    Hazelcast Service
 
     <a id="create-service"></a>
 
-1. Create a file called `hazelcast.json` using this [sample JSON file](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) as a template. 
+1. Create a file named `hazelcast.json` using this [sample Hazelcast JSON file](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) as a template. 
 
 1. Replace `YOUR_LICENSE_KEY` with the active Hazelcast Enterprise License or a trial license. For more information, see [License](index.html#license). 
 
@@ -61,6 +61,6 @@ $ cf restage myapp
     </pre>
 
 4. Start using the Hazelcast in-memory data grid (IMDG). Necessary parameters are passed to your application in
- `VCAP_SERVICES` environment variable. For more information, see [this sample Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration)
+ `VCAP_SERVICES` environment variable. See [this sample Hazelcast Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration)
  for further information.
 
