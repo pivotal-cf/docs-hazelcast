@@ -9,7 +9,8 @@ owner: Partners
 
 **New in this release**
 
-* Hazelcast for PCF Tile accesses BOSH Director using hostname instead of its IP address.
+* Internally, Hazelcast for PCF now refers to the Ops Manager Director by hostname instead of by IP address.
+  This corrects an issue where the tile could not communicate with the Ops Manager Director if the IP address changed.
 
 ### v1.3.2.0
 
