@@ -1,51 +1,51 @@
 ---
-title: Using Hazelcast for PCF
+title: Using Hazelcast IMDG Enterprise for PCF
 owner: Partners
 ---
 
-This topic describes how developers use Hazelcast for Pivotal Cloud Foundry (PCF).
+This topic describes how developers use Hazelcast IMDG Enterprise for Pivotal Cloud Foundry (PCF).
 
-After your PCF operator installs the Hazelcast for PCF tile, it automatically registers itself to the Marketplace. 
+After your PCF operator installs the Hazelcast IMDG Enterprise for PCF tile, it automatically registers itself to the Marketplace.
 
-Follow these steps to create an instance of the Hazelcast service based on an available plan and bind it to your app. 
-The plans available to you are determined by your PCF operator. 
-For more information about configuring plans, see [Installing and Configuring Hazelcast for PCF](installing.html).
+Follow these steps to create an instance of the Hazelcast service based on an available plan and bind it to your app.
+The plans available to you are determined by your PCF operator.
+For more information about configuring plans, see [Installing and Configuring Hazelcast IMDG Enterprise for PCF](installing.html).
 
 <a id="marketplace"></a>
 
-1. To check availability of Hazelcast for PCF, enter the following command:
+1. To check availability of Hazelcast IMDG Enterprise for PCF, enter the following command:
 
     ```
     $ cf marketplace
     ```
-    For example, 
+    For example,
 
     <pre class="terminal">
-$ cf marketplace 
-Getting services from marketplace in org system / space system as admin... 
+$ cf marketplace
+Getting services from marketplace in org system / space system as admin...
 OK<br>
-service         plans                            description 
-app-autoscaler 	bronze, gold                     Scales bound applications in response to load (beta) 
-hazelcast       t2.micro, t2.small, m3.medium    Hazelcast Service 
+service         plans                            description
+app-autoscaler 	bronze, gold                     Scales bound applications in response to load (beta)
+hazelcast       t2.micro, t2.small, m3.medium    Hazelcast Service
     </pre>
 
     <a id="create-service"></a>
 
-1. Create a file named `hazelcast.json` using this [sample Hazelcast JSON file](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) as a template. 
+1. Create a file named `hazelcast.json` using this [sample Hazelcast JSON file](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) as a template.
 
-1. Replace `YOUR_LICENSE_KEY` with the active Hazelcast Enterprise License or a trial license. For more information, see [License](index.html#license). 
+1. Replace `YOUR_LICENSE_KEY` with the active Hazelcast Enterprise License or a trial license. For more information, see [License](index.html#license).
 
 1. To create a cluster, enter the following command:
-  
+
     ```
     $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME -c hazelcast.json
     ```
-    For example, 
+    For example,
     <pre class="terminal">
 $ cf create-service hazelcast t2.micro micro-cluster -c hazelcast.json
 Creating service instance micro-cluster in org system / space system as admin...
-OK<br> 
-Create in progress. Use 'cf services' or 'cf service micro-cluster' to check operation status. 
+OK<br>
+Create in progress. Use 'cf services' or 'cf service micro-cluster' to check operation status.
     </pre>
 
 3. To bind the service to your app, enter the following commands:
@@ -63,4 +63,3 @@ $ cf restage myapp
 4. Start using the Hazelcast in-memory data grid (IMDG). Necessary parameters are passed to your application in
  `VCAP_SERVICES` environment variable. See [this sample Hazelcast Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration)
  for further information.
-
