@@ -3,14 +3,12 @@ title: Hazelcast IMDG Enterprise for Pivotal Cloud Foundry
 owner: Partners
 ---
 
-This documentation describes how to install, configure, and use Hazelcast IMDG Enterprise for Pivotal Cloud Foundry (PCF).
-Hazelcast IMDG Enterprise for PCF registers a service broker on PCF and exposes its service plans on the Marketplace.
-Developers can provision Hazelcast clusters by creating instances of the service plans using the Cloud Foundry Command Line Interface (cf CLI).
+This documentation describes how to install, configure, and use Hazelcast IMDG Enterprise for Pivotal Cloud Foundry (PCF). Hazelcast IMDG Enterprise for PCF registers a service broker on PCF and exposes its service plans on the Marketplace. Developers can provision Hazelcast clusters by creating instances of the service plans using the Cloud Foundry Command Line Interface (cf CLI).
 
-## <a id='overview'></a>Overview
 
-Hazelcast IMDG Enterprise for PCF uses an on-demand services SDK, which is a part of [Pivotal Cloud Services SDK](https://network.pivotal.io/products/on-demand-services-sdk),
-to fully utilize BOSH-2.0 features and let you provision instances more flexibly.
+## <a id='overview'></a> Overview
+
+Hazelcast IMDG Enterprise for PCF uses an on-demand services SDK, which is a part of [Pivotal Cloud Services SDK](https://network.pivotal.io/products/on-demand-services-sdk), to fully utilize BOSH-2.0 features and let you provision instances more flexibly.
 
 Features of Hazelcast IMDG Enterprise for PCF include the following:
 
@@ -18,7 +16,8 @@ Features of Hazelcast IMDG Enterprise for PCF include the following:
 * The ability to dynamically pass your Hazelcast configuration in JSON format when creating services
 * An on-demand service broker that dynamically creates and scales Hazelcast clusters without pre-provisioning blocks of VMs
 
-## <a id="snapshot"></a>Product Snapshot
+
+## <a id="snapshot"></a> Product Snapshot
 
 <p class='note'><strong>Note:</strong> As of PCF v2.0, Elastic Runtime is renamed Pivotal Application Service (PAS).</p>
 
@@ -58,16 +57,17 @@ The following table provides version and version-support information about Hazel
 </table>
 
 
-## <a id="limitations"></a>Limitations
+## <a id="limitations"></a> Limitations
 
-If you change `managementCenterConfig` in your JSON configuration file, then all VMs are shutdown at the same time. This means that you lose all the cluster data unless you are persisting that data elsewhere.
+If you change `managementCenterConfig` in your JSON configuration file, then all VMs are shut down at the same time. This means that you lose all the cluster data unless you are persisting that data elsewhere.
 
-## <a id="feedback"></a>Feedback
+
+## <a id="feedback"></a> Feedback
 
 Please provide any bugs, feature requests, or questions to the [Hazelcast User Group](mailto:hazelcast@googlegroups.com), the
 [Hazelcast GitHub repo](https://github.com/hazelcast/hazelcast), or by sending an email to [Hazelcast Support](mailto:support@hazelcast.com).
 
-## <a id='license'></a>License
 
-Hazelcast IMDG Enterprise for PCF needs an active Hazelcast IMDG Enterprise License. You can request a trial license from [hazelcast.com](https://hazelcast.com/hazelcast-enterprise-download/trial/)
-or by contacting [sales@hazelcast.com](mailto:sales@hazelcast.com).
+## <a id='license'></a> License
+
+Hazelcast IMDG Enterprise for PCF needs an active Hazelcast IMDG Enterprise License. You can request a trial license from [hazelcast.com](https://hazelcast.com/hazelcast-enterprise-download/trial/) or by contacting [sales@hazelcast.com](mailto:sales@hazelcast.com).
