@@ -7,13 +7,11 @@ This topic describes how developers use Hazelcast IMDG Enterprise for Pivotal Cl
 
 After your PCF operator installs the Hazelcast IMDG Enterprise for PCF tile, it automatically registers itself to the Marketplace.
 
-Follow these steps to create an instance of the Hazelcast service based on an available plan and bind it to your app.
-The plans available to you are determined by your PCF operator.
-For more information about configuring plans, see [Installing and Configuring Hazelcast IMDG Enterprise for PCF](installing.html).
+Follow these steps to create an instance of the Hazelcast service based on an available plan and bind it to your app. The plans available to you are determined by your PCF operator. For more information about configuring plans, see [Installing and Configuring Hazelcast IMDG Enterprise for PCF](installing.html).
 
-<a id="marketplace"></a>
+## <a id="marketplace"></a> Checking Availability
 
-1. To check availability of Hazelcast IMDG Enterprise for PCF, enter the following command:
+1. To check availability of Hazelcast IMDG Enterprise for PCF, run the following command:
 
     ```
     $ cf marketplace
@@ -29,18 +27,18 @@ app-autoscaler 	bronze, gold                     Scales bound applications in re
 hazelcast       t2.micro, t2.small, m3.medium    Hazelcast Service
     </pre>
 
-    <a id="create-service"></a>
+## <a id="create-service"></a> Create and Bind a Service to Your App
 
-2. Create a file named `hazelcast.json` using this [sample Hazelcast JSON file](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) as a template.
+1. Create a file named `hazelcast.json` using this [sample Hazelcast JSON file](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) as a template.
 
-3. Replace `YOUR_LICENSE_KEY` with the active Hazelcast Enterprise License or a trial license. For more information, see [License](index.html#license).
+1. Replace `YOUR_LICENSE_KEY` with the active Hazelcast Enterprise License or a trial license. For more information, see [License](index.html#license).
 
-4. To create a cluster, enter the following command:
+1. To create a cluster, run the following command:
 
     ```
     $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME -c hazelcast.json
     ```
-    For example,
+    For example:
     <pre class="terminal">
 $ cf create-service hazelcast t2.micro micro-cluster -c hazelcast.json
 Creating service instance micro-cluster in org system / space system as admin...
@@ -48,7 +46,7 @@ OK<br>
 Create in progress. Use 'cf services' or 'cf service micro-cluster' to check operation status.
     </pre>
 
-5. To bind the service to your app, enter the following commands:
+1. To bind the service to your app, run the following commands:
 
     ```
     $ cf bind-service MY-APPLICATION SERVICE_INSTANCE_NAME
@@ -60,23 +58,18 @@ $ cf bind-service myapp micro-cluster
 $ cf restage myapp
     </pre>
 
-6. Start using the Hazelcast in-memory data grid (IMDG). Necessary parameters are passed to your application in
- `VCAP_SERVICES` environment variable. See [this sample Hazelcast Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration)
- for further information.
+1. Start using the Hazelcast in-memory data grid (IMDG). Necessary parameters are passed to your application in `VCAP_SERVICES` environment variable. See [this sample Hazelcast Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration) for further information.
 
-7. A [hazelcast-full.json](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration/hazelcast-full.json)
-   sample config is available to show syntax for advanced settings. You can copy the relevant parts to your own config file
-   and change the values according to your needs.
+1. A [hazelcast-full.json](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration/hazelcast-full.json) sample config is available to show syntax for advanced settings. You can copy the relevant parts to your own config file and change the values according to your needs.
 
-## Configuring WAN replication
 
-This section explains a way to configure WAN replication in PCF.
-Please see [the official documentation](https://hazelcast.com/products/wan-replication/) for reference.
+## <a id='wan-replication'></a> Configuring WAN Replication
 
-### Source cluster
+For more information on configuring WAN replication in PCF, see [the official documentation](https://hazelcast.com/products/wan-replication/).
 
-In this example, we will use the Eureka service registry for target cluster discovery.
-This was tested with Eureka server version 1.4.12.
+### <a id='source-cluster'></a> Source Cluster
+
+In this example, we will use the Eureka service registry for target cluster discovery. This was tested with Eureka server v1.4.12.
 
 Edit the `hazelcast.json` file for the source cluster to include the following `wanReplicationConfigs` configuration:
 
@@ -123,11 +116,9 @@ Edit the `hazelcast.json` file for the source cluster to include the following `
   }
 ```
 
-Change `groupName` and `group.password` to match your existing target cluster configuration,
-`serviceUrl.default` to match your Eureka service endpoint, and any other config values to your needs.
+Change `groupName` and `group.password` to match your existing target cluster configuration, `serviceUrl.default` to match your Eureka service endpoint, and any other config values to your needs.
 
-In this example we want to set up WAN replication for a map called `my-map`. This can be achieved by including
-the following `mapConfigs` configuration in your `hazelcast.json`:
+In this example we want to set up WAN replication for a map called `my-map`. This can be achieved by including the following `mapConfigs` configuration in your `hazelcast.json`:
 
 ```
   "mapConfigs": {
@@ -171,10 +162,9 @@ the following `mapConfigs` configuration in your `hazelcast.json`:
 
 Change any value as needed.
 
-#### Management Center support
+#### <a id='management-center-support'></a> Management Center Support
 
-In order to enable the WAN replication features in Management Center (e.g., manual sync) don't forget to include
-the following `properties` configuration:
+To enable the WAN replication features in Management Center (e.g. manual sync), do not forget to include the following `properties` configuration:
 
 ```
   "properties": {
@@ -182,10 +172,9 @@ the following `properties` configuration:
   }
 ```
 
-### Target cluster
+### <a id='target-cluster'></a> Target Cluster
 
-In this example, we will use the Eureka service registry for cluster member discovery. This allows the other cluster
-(the source cluster) to find the addresses for this cluster by means of Eureka, as shown in the previous example.
+This example uses Eureka service registry for cluster member discovery. This allows the other cluster (the source cluster) to find the addresses for this cluster by means of Eureka, as shown in the previous example.
 
 Edit the `hazelcast.json` file for the target cluster to include the following `networkConfig` configuration:
 
@@ -241,25 +230,23 @@ Edit the `hazelcast.json` file for the target cluster to include the following `
 Change `serviceUrl.default` to match your Eureka service endpoint, and any other config values to your needs.
 
 
-## Configuring User Code Deployment
+## <a id='user-code-config'></a> Configuring User Code Deployment
 
-This section explains how to configure user code deployment, i.e., how to deploy user code
-at service creation/start-up time.
+This section explains how to configure user code deployment, i.e. how to deploy user code at service creation/start-up time.
 
-### Summary of Functionality
-User can specify additional jar(s) to be added to the server's classpath.
-A new optional JSON configuration key (`userCodeUrl`) has been defined and can be used to specify
-one or more URLs for the additional jar(s).
+### <a id='summary'></a> Summary of Functionality
 
-### Technical Design
-The new JSON configuration key `userCodeUrl` can be instantiated either as a `string` or as `string[]`.
-For example, a single jar can be specified with the following syntax.
+You can specify additional jar(s) to be added to the server's classpath. A new optional JSON configuration key (`userCodeUrl`) has been defined and can be used to specify one or more URLs for the additional jar(s).
+
+### <a id='tech-design'></a> Technical Design
+                      
+The new JSON configuration key `userCodeUrl` can be instantiated either as a `string` or as `string[]`. For example, a single jar can be specified with the following syntax.
 
 ```
 "userCodeUrl": "<usercode-url>"
 ```
 
-To specify multiple jars the following syntax can be used.
+To specify multiple jars, the following syntax can be used:
 
 ```
 "userCodeUrl": [
@@ -271,40 +258,28 @@ Every string specified in `userCodeUrl` must be a valid, reachable URL.
 
 At server start-up time, the jar(s) will be downloaded and added to Hazelcast member's classpath.
 
-During service update, all existing user code jars will be removed before re-downloading the jar(s) specified in
-`userCodeUrl`. The user is therefore expressly allowed to update / add / delete user code jars with a `service-update`
- operation by changing the `userCodeUrl` property.
+During service update, all existing user code jars will be removed before re-downloading the jar(s) specified in `userCodeUrl`. The user is therefore expressly allowed to update, add, or delete user code jars with a `service-update` operation by changing the `userCodeUrl` property.
 
 
-## Configuring Transport Layer Security
+## <a id='config-tls'</a> Configuring Transport Layer Security
 
-This section explains how to configure SSL/TLS for secure communication.
-SSL (Secure Sockets Layer) protocol was introduced to establish an encrypted communication across your cluster
-with key stores and trust stores.
-SSL is now deprecated, so you will be using its successor TLS (Transport Layer Security).
+This section explains how to configure SSL/TLS for secure communication. SSL (Secure Sockets Layer) protocol was introduced to establish an encrypted communication across your cluster with key stores and trust stores. SSL is now deprecated, so you will be using its successor TLS (Transport Layer Security).
 
-### Summary of Functionality
-Hazelcast allows you to encrypt socket level communication between Hazelcast members
-and between Hazelcast clients and members, for end to end encryption.
-Please see [the official Hazelcast TLS documentation](http://docs.hazelcast.org/docs/latest/manual/html-single/index.html#tlsssl)
-for reference.
+### <a id='summary-2'></a> Summary of Functionality
 
-### Technical Design
-The new JSON configuration key `tlsArchiveUrl` is a `string` that must contain a valid, reachable URL for a `.tar.gz`
-(or `.tgz`) archive. The archive must contain exactly two files, the Hazelcast key store (file must be named `keystore`)
-and the Hazelcast trust store (file must be named `truststore`).
+Hazelcast allows you to encrypt socket level communication between Hazelcast members and between Hazelcast clients and members, for end to end encryption. For more information, see [the official Hazelcast TLS documentation](http://docs.hazelcast.org/docs/latest/manual/html-single/index.html#tlsssl).
+
+### <a id='tech-design-2'></a> Technical Design
+
+The new JSON configuration key `tlsArchiveUrl` is a `string` that must contain a valid, reachable URL for a `.tar.gz` (or `.tgz`) archive. The archive must contain exactly two files, the Hazelcast key store (file must be named `keystore`) and the Hazelcast trust store (file must be named `truststore`).
 
 ```
 "tlsArchiveUrl": "<archive-url>"
 ```
 
-### Example configuration
+### <a id='example-config'></a> Example Configuration
 
-The following snippet contains the relevant parts of json configuration for enabling TLS.
-The `tlsArchiveUrl` points to an archive containing password-protected key and trust stores.
-Passwords for the stores are specified in the configuration itself, with `keyStorePassword`
-and `trustStorePassword`. Always specify `"protocol": "TLS"` and specify the correct
-`keyManagerAlgorithm` and `trustManagerAlgorithm` for your stores.
+The following snippet contains the relevant parts of json configuration for enabling TLS. The `tlsArchiveUrl` points to an archive containing password-protected key and trust stores. Passwords for the stores are specified in the configuration itself, with `keyStorePassword` and `trustStorePassword`. Always specify `"protocol": "TLS"` and specify the correct `keyManagerAlgorithm` and `trustManagerAlgorithm` for your stores.
 
 ```
 {
@@ -331,16 +306,11 @@ and `trustStorePassword`. Always specify `"protocol": "TLS"` and specify the cor
 }
 ```
 
-### Using OpenSSL
+### <a id='openssl'></a> Using OpenSSL
 
-Hazelcast provides integration with OpenSSL, which can provide significant performance improvements.
-Please see [the official Hazelcast OpenSSL integration documentation](http://docs.hazelcast.org/docs/latest/manual/html-single/index.html#integrating-openssl)
-for reference.
+Hazelcast provides integration with OpenSSL, which can provide significant performance improvements. For more information, see [the official Hazelcast OpenSSL integration documentation](http://docs.hazelcast.org/docs/latest/manual/html-single/index.html#integrating-openssl).
 
-The OpenSSL libraries and supporting artifacts are already included with Hazelcast IMDG Enterprise for PCF.
-In order to enable the OpenSSL integration the configuration you must simply
-include `"factoryClassName": "com.hazelcast.nio.ssl.OpenSSLEngineFactory"` in the `sslConfig`.
-Please see the following snippet.
+The OpenSSL libraries and supporting artifacts are already included with Hazelcast IMDG Enterprise for PCF. To enable the OpenSSL integration the configuration, you must include `"factoryClassName": "com.hazelcast.nio.ssl.OpenSSLEngineFactory"` in the `sslConfig`, as in the example below.
 
 ```
 {
