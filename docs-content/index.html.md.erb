@@ -3,6 +3,11 @@ title: Hazelcast IMDG Enterprise for Pivotal Cloud Foundry
 owner: Partners
 ---
 
+<p class="note warning"><strong> WARNING:</strong>
+This tile requires a Trusty stemcell.
+The end of life date for Ubuntu Trusty is April 2019.
+If a security vulnerability is found on this stemcell after April, it will not be fixed.</p>
+
 This documentation describes how to install, configure, and use Hazelcast IMDG Enterprise for Pivotal Cloud Foundry (PCF). Hazelcast IMDG Enterprise for PCF registers a service broker on PCF and exposes its service plans on the Marketplace. Developers can provision Hazelcast clusters by creating instances of the service plans using the Cloud Foundry Command Line Interface (cf CLI).
 
 
@@ -49,6 +54,11 @@ The following table provides version and version-support information about Hazel
         <td>Compatible Pivotal Application Services (PAS) version(s)</td>
         <td>v2.2, v2.3, and v2.4</td>
         <td>v2.2 and v2.3</td>
+    </tr>
+    <tr>
+       <td>BOSH stemcell version</td>
+       <td>Ubuntu Trusty</td>
+       <td>Ubuntu Trusty</td>
     </tr>
     <tr>
         <td>IaaS support</td>
