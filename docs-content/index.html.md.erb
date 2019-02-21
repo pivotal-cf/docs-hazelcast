@@ -3,11 +3,6 @@ title: Hazelcast IMDG Enterprise for Pivotal Cloud Foundry
 owner: Partners
 ---
 
-<p class="note warning"><strong> WARNING:</strong>
-This tile requires a Trusty stemcell.
-The end of life date for Ubuntu Trusty is April 2019.
-If a security vulnerability is found on this stemcell after April, it will not be fixed.</p>
-
 This documentation describes how to install, configure, and use Hazelcast IMDG Enterprise for Pivotal Cloud Foundry (PCF). Hazelcast IMDG Enterprise for PCF registers a service broker on PCF and exposes its service plans on the Marketplace. Developers can provision Hazelcast clusters by creating instances of the service plans using the Cloud Foundry Command Line Interface (cf CLI).
 
 
@@ -32,17 +27,17 @@ The following table provides version and version-support information about Hazel
     <th>v1.5</th>
     <tr>
         <td>Version</td>
-        <td>v1.6.2</td>
+        <td>v1.6.3</td>
         <td>v1.5.1</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>January 10, 2019</td>
+        <td>February 20, 2019</td>
         <td>December 20, 2018</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>3.11.1</td>
+        <td>3.11.2</td>
         <td>3.10</td>
     </tr>
     <tr>
@@ -57,7 +52,7 @@ The following table provides version and version-support information about Hazel
     </tr>
     <tr>
        <td>BOSH stemcell version</td>
-       <td>Ubuntu Trusty</td>
+       <td>Ubuntu Xenial</td>
        <td>Ubuntu Trusty</td>
     </tr>
     <tr>
@@ -71,6 +66,12 @@ The following table provides version and version-support information about Hazel
         <td>Yes</td>
     </tr>
 </table>
+<p class="note warning"><strong> WARNING:</strong>
+Hazelcast IMDG Enterprise for PCF v1.6.2
+and earlier require a Ubuntu Trusty stemcell.
+The end-of-life date for Ubuntu Trusty is April 2019.
+If a security vulnerability is found on this stemcell after April, it will not be fixed.</p>
+
 
 
 ## <a id="limitations"></a> Limitations
