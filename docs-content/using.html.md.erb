@@ -328,3 +328,85 @@ The OpenSSL libraries and supporting artifacts are already included with Hazelca
 ...
 }
 ```
+
+## <a id='rolling'></a> Performing a Rolling Upgrade
+
+Hazelcast clusters can be update with a Rolling Upgrade procedure.
+
+### Minor vs Patch release upgrade
+
+You can update IMDG version x.y.z to version x.y.z' where z' > z at any time.
+This is called a patch release upgrade.
+
+The protocol version of all members will stay the same and it is identified by x.y.
+
+For instance, suppose you are upgrading from 3.11.3 to 3.11.4.
+In this case the protocol version is not going to change and it is 3.11.
+
+You can also update IMDG version to x.y.z to version x.y'.z' where y' = y + 1 (and no particular relation exists between z and z').
+This is called a minor release upgrade.
+
+In this case to conclude the Rolling Upgrade procedure, after all members are upgraded to version x.y'.z'
+the protocol version needs to be upgraded to version x.y'.
+
+For instance, suppose you are upgrading from 3.11.4 to 3.12.4.
+In this case, at the conclusion of the rolling upgrade procedure,
+the protocol version needs to be upgraded from 3.11 to 3.12.
+
+Please note that version of the tiles are independent of the version of Hazelcast IMDG,
+but they do follow semantic versioning.
+Please check the IMDG versions for the old and the new tile in the documentation.
+
+### Minor release upgrade: Configuration needed
+
+In order to trigger the protocol version upgrade for a minor release upgrade,
+the REST API feature must be enabled in the configuration for the cluster members.
+It can be permanently enabled or just temporarily for the Rolling Upgrade procedure.
+In any case, if you are doing a Minor release upgrade you have to enable the REST API
+before starting the Rolling Upgrade procedure.
+
+In order to enable the REST API, you must add the following property to your `json`
+configuration:
+
+```
+"properties":{
+  "hazelcast.rest.enabled":true
+}
+```
+
+### Starting the Rolling Upgrade procedure
+
+After a successful tile update (e.g. via the Ops Manager), you can trigger a Rolling Update
+for a particular service instance by executing:
+
+```
+$ cf update-service my-hazelcast-instance -c my-hazelcast-config.json
+```
+
+Of course, you must have enabled the REST API in your `json` configuration
+in case of a minor version upgrade.
+
+You can monitor the RU live with the like of
+
+```
+$ watch cf service my-hazelcast-instance
+```
+
+### Minor release upgrade: Upgrading the protocol version
+
+Go to Management Center, log in. Go to Administration Panel, then Rolling Upgrade.
+Enter cluster name and password and the new protocol version (e.g., "3.12").
+Click Upgrade Protocol.
+
+The Rolling Upgrade is now complete.
+
+#### Disabling the REST API
+
+At this point, if you wish to disable the REST API you can remove it from the configuration
+and then trigger another rolling update of the configuration:
+
+```
+$ cf update-service my-hazelcast-instance -c my-hazelcast-config.json
+```
+
+The new configuration will be applied to all members.
