@@ -31,6 +31,10 @@ hazelcast       t2.micro, t2.small, m3.medium    Hazelcast Service
 
 1. Create a file named `hazelcast.json` using this [sample Hazelcast JSON file](https://github.com/hazelcast/hazelcast-code-samples/blob/master/hazelcast-integration/pcf-integration/hazelcast.json) as a template.
 
+<p class="note"><strong> Note:</strong>
+ Hazelcast IMDG Enterprise for Pivotal Platform v2.0.0
+ and later require JSON config file that uses new structure. For more information about JSON config structure, see <a href="./json-config">JSON Config Structure</a> </p> section.
+
 1. Replace `YOUR_LICENSE_KEY` with the active Hazelcast Enterprise License or a trial license. For more information, see [License](index.html#license).
 
 1. To create a cluster, run the following command:
@@ -46,6 +50,10 @@ OK<br>
 Create in progress. Use 'cf services' or 'cf service micro-cluster' to check operation status.
     </pre>
 
+  You can create 2 nodes Hazelcast cluster only with one line command as well:
+    ```
+    $ cf cs hazelcast small hz -c '{"hazelcast": {"license-key": "PUT_LICENSE_HERE"}}'
+    ````
 1. To bind the service to your app, run the following commands:
 
     ```
@@ -60,7 +68,40 @@ $ cf restage myapp
 
 1. Start using the Hazelcast in-memory data grid (IMDG). Necessary parameters are passed to your application in `VCAP_SERVICES` environment variable. See [this sample Hazelcast Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration) for further information.
 
-1. A [hazelcast-full.json](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration/hazelcast-full.json) sample config is available to show syntax for advanced settings. You can copy the relevant parts to your own config file and change the values according to your needs.
+
+### <a id='json-config'></a> JSON Config Structure
+Hazelcast IMDG Enterprise 3.12 comes with `YAML 1.2` configuration [support](https://docs.hazelcast.org/docs/latest/manual/html-single/index.html#configuring-declaratively-yaml), `YAML 1.2` has a `JSON`` support as well. It gives an opportunity to use native JSON configuration support at tile side accordingly.
+
+The JSON structure consists of two section/JSONs, `hazelcast-pcf` section contains tile specific parameters, section `hazelcast` is derived from Hazelcast YAML file:
+```
+{
+    "hazelcast-pcf": {
+        "instanceCount": 2,
+        "jvmOptions": "",
+        "tlsArchiveUrl": "",
+        "userCodeURl": "",
+        "mancenterAppName": "mancenter",
+        "mancenterLicense": "",
+        "mancenterJvmOptions": ""
+    },
+    "hazelcast": {
+        "license-key": "PUT_LICENSE_HERE",
+        "management-center": {
+          "enabled": true
+        }
+    }
+}
+```
+
+A [hazelcast-fullconfig.yaml](https://github.com/hazelcast/hazelcast/blob/master/hazelcast/src/test/resources/hazelcast-fullconfig-without-network.yaml) sample config is available to show syntax for advanced settings. You can copy the relevant parts to your own YAML config file and change the values according to your needs.
+
+Then you can convert your `hazelcast.yaml` configuration file with one line command that utilizes [yq](https://mikefarah.github.io/yq/) and [jq](https://stedolan.github.io/jq/) tools:
+```
+yq r -j /path/to/hazelcast.yaml | xargs jq .
+```
+Or you can convert the yaml file via any yaml-json converter.
+
+Lastly, copy the JSON output directly into `hazelcast` section at main service configuration JSON.
 
 
 ## <a id='wan-replication'></a> Configuring WAN Replication
@@ -74,90 +115,61 @@ In this example, we will use the Eureka service registry for target cluster disc
 Edit the `hazelcast.json` file for the source cluster to include the following `wanReplicationConfigs` configuration:
 
 ```
-  "wanReplicationConfigs": {
-    "my-wan-cluster-batch": {
-      "name": "my-wan-cluster-batch",
-      "wanPublisherConfigs": [
-        {
-          "groupName": "cluster-name",
-          "queueCapacity": 10000,
-          "queueFullBehavior": "DISCARD_AFTER_MUTATION",
+{
+  "hazelcast": {
+    "wan-replication": {
+      "my-wan-cluster": {
+        "wan-publisher": {
+          "class-name": "com.hazelcast.enterprise.wan.replication.WanBatchReplication",
+          "group-name": "cluster-name",
+          "queue-capacity": 1000,
+          "queue-full-behavior": "DISCARD_AFTER_MUTATION",
           "properties": {
-            "maxEndpoints": 5,
+            "batch.max.delay.millis": 3000,
+            "batch.size": 50,
             "group.password": "cluster-password",
-            "batch.max.delay.millis": 1000
+            "maxEndpoints": 5
           },
-          "className": "com.hazelcast.enterprise.wan.replication.WanBatchReplication",
-          "awsConfig": {
-            "enabled": false,
-            "region": "us-east-1",
-            "hostHeader": "ec2.amazonaws.com",
-            "connectionTimeoutSeconds": 5
+          "aws": {
+            "enabled": false
           },
-          "discoveryConfig": {
-            "discoveryStrategyConfigs": [
-              {
-                "properties": {
-                  "environment": "test",
-                  "shouldUseDns": false,
-                  "serviceUrl.default": "http://<my-eureka>/eureka",
-                  "namespace": "hazelcast",
-                  "name": "hazelcast-target",
-                  "use-classpath-eureka-client-props": false,
-                  "self-registration": false
-                },
-                "className": "com.hazelcast.eureka.one.EurekaOneDiscoveryStrategy"
-              }
-            ]
+          "eureka": {
+            "enabled": true,
+            "environment": "test",
+            "name": "hazelcast-target",
+            "namespace": "hazelcast",
+            "self-registration": false,
+            "serviceUrl.default": "http://<my-eureka>/eureka",
+            "shouldUseDns": false,
+            "use-classpath-eureka-client-props": false
           }
         }
-      ]
-    }
-  }
-```
-
-Change `groupName` and `group.password` to match your existing target cluster configuration, `serviceUrl.default` to match your Eureka service endpoint, and any other config values to your needs.
-
-In this example we want to set up WAN replication for a map called `my-map`. This can be achieved by including the following `mapConfigs` configuration in your `hazelcast.json`:
-
-```
-  "mapConfigs": {
-    "my-map": {
-      "name": "my-map",
-      "backupCount": 1,
-      "asyncBackupCount": 0,
-      "timeToLiveSeconds": 0,
-      "maxIdleSeconds": 0,
-      "maxSizeConfig": {
-        "maxSizePolicy": "PER_NODE",
-        "size": 2147483647
-      },
-      "evictionPolicy": "NONE",
-      "mapStoreConfig": {
-        "enabled": false,
-        "writeCoalescing": true,
-        "writeDelaySeconds": 0,
-        "writeBatchSize": 1,
-        "properties": {},
-        "initialLoadMode": "LAZY"
-      },
-      "readBackupData": false,
-      "cacheDeserializedValues": "INDEX_ONLY",
-      "mergePolicy": "com.hazelcast.map.merge.PutIfAbsentMapMergePolicy",
-      "inMemoryFormat": "BINARY",
-      "wanReplicationRef": {
-        "name": "my-wan-cluster-batch",
-        "mergePolicy": "com.hazelcast.map.merge.PassThroughMergePolicy",
-        "filters": [],
-        "republishingEnabled": false
-      },
-      "statisticsEnabled": true,
-      "hotRestartConfig": {
-        "enabled": false,
-        "fsync": false
       }
     }
   }
+}
+```
+
+Change `group-name` and `group.password` to match your existing target cluster configuration, `serviceUrl.default` to match your Eureka service endpoint, and any other config values to your needs.
+
+In this example we want to set up WAN replication for a map called `my-map`. This can be achieved by including the following `hazelcast` section in your `hazelcast.json`:
+
+```
+{
+  "hazelcast": {
+    "map": {
+      "my-map": {
+        "wan-replication-ref": {
+          "my-wan-cluster": {
+            "filters": [],
+            "merge-policy": "com.hazelcast.map.merge.PassThroughMergePolicy",
+            "republishing-enabled": false
+          }
+        }
+      }
+    }
+  }
+}
 ```
 
 Change any value as needed.
@@ -167,64 +179,41 @@ Change any value as needed.
 To enable the WAN replication features in Management Center (e.g. manual sync), do not forget to include the following `properties` configuration:
 
 ```
-  "properties": {
-    "hazelcast.rest.enabled": true
+{
+	"hazelcast": {
+    "properties": {
+			"hazelcast.rest.enabled": true
+    }
   }
+}
 ```
 
 ### <a id='target-cluster'></a> Target Cluster
 
 This example uses Eureka service registry for cluster member discovery. This allows the other cluster (the source cluster) to find the addresses for this cluster by means of Eureka, as shown in the previous example.
 
-Edit the `hazelcast.json` file for the target cluster to include the following `networkConfig` configuration:
+Edit the `hazelcast.json` file for the target cluster to include the following `hazelcast` section:
 
 ```
-  "networkConfig": {
-    "port": 5701,
-    "portCount": 100,
-    "portAutoIncrement": true,
-    "reuseAddress": true,
-    "interfaces": {
-      "enabled": false,
-      "interfaceSet": []
-    },
-    "join": {
-      "multicastConfig": {
-        "enabled": false,
-        "multicastGroup": "224.2.2.3",
-        "multicastPort": 54327,
-        "multicastTimeoutSeconds": 2,
-        "multicastTimeToLive": 32,
-        "trustedInterfaces": [],
-        "loopbackModeEnabled": false
+{
+	"hazelcast": {
+		"network": {
+      "multicast:" {
+        "enabled:" false
       },
-      "tcpIpConfig": {
-        "connectionTimeoutSeconds": 5,
-        "enabled": false,
-        "members": []
-      },
-      "awsConfig": {
-        "enabled": false,
-        "region": "us-east-1",
-        "hostHeader": "ec2.amazonaws.com",
-        "connectionTimeoutSeconds": 5
-      },
-      "discoveryConfig": {
-        "discoveryStrategyConfigs": [
-          {
-            "properties": {
-              "environment": "test",
-              "shouldUseDns": false,
-              "serviceUrl.default": "http://<my-eureka>/eureka",
-              "namespace": "hazelcast",
-              "name": "hazelcast-target",
-              "use-classpath-eureka-client-props": false
-            },
-            "className": "com.hazelcast.eureka.one.EurekaOneDiscoveryStrategy"
-          }
-        ]
+      "eureka": {
+        "enabled": true,
+        "environment": "test",
+        "name": "hazelcast-target",
+        "namespace": "hazelcast",
+        "self-registration": true,
+        "serviceUrl.default": "http://<my-eureka>/eureka",
+        "shouldUseDns": false,
+        "use-classpath-eureka-client-props": false
       }
-    }
+		}
+  }
+}
 ```
 
 Change `serviceUrl.default` to match your Eureka service endpoint, and any other config values to your needs.
@@ -239,19 +228,27 @@ This section explains how to configure user code deployment, i.e. how to deploy 
 You can specify additional jar(s) to be added to the server's classpath. A new optional JSON configuration key (`userCodeUrl`) has been defined and can be used to specify one or more URLs for the additional jar(s).
 
 ### <a id='tech-design'></a> Technical Design
-                      
+
 The new JSON configuration key `userCodeUrl` can be instantiated either as a `string` or as `string[]`. For example, a single jar can be specified with the following syntax.
 
 ```
-"userCodeUrl": "<usercode-url>"
+{
+    "hazelcast-pcf": {
+        "userCodeUrl": "<usercode-url>"
+    }
+}
 ```
 
 To specify multiple jars, the following syntax can be used:
 
 ```
-"userCodeUrl": [
-    "<usercode-url-1>", ..., "<usercode-url-n>"
-]
+{
+    "hazelcast-pcf": {
+      "userCodeUrl": [
+        "<usercode-url-1>", ..., "<usercode-url-n>"
+      ]
+    }
+}
 ```
 
 Every string specified in `userCodeUrl` must be a valid, reachable URL.
@@ -261,7 +258,7 @@ At server start-up time, the jar(s) will be downloaded and added to Hazelcast me
 During service update, all existing user code jars will be removed before re-downloading the jar(s) specified in `userCodeUrl`. The user is therefore expressly allowed to update, add, or delete user code jars with a `service-update` operation by changing the `userCodeUrl` property.
 
 
-## <a id='config-tls'</a> Configuring Transport Layer Security
+## <a id='config-tls'></a> Configuring Transport Layer Security
 
 This section explains how to configure SSL/TLS for secure communication. SSL (Secure Sockets Layer) protocol was introduced to establish an encrypted communication across your cluster with key stores and trust stores. SSL is now deprecated, so you will be using its successor TLS (Transport Layer Security).
 
@@ -274,7 +271,11 @@ Hazelcast allows you to encrypt socket level communication between Hazelcast mem
 The new JSON configuration key `tlsArchiveUrl` is a `string` that must contain a valid, reachable URL for a `.tar.gz` (or `.tgz`) archive. The archive must contain exactly two files, the Hazelcast key store (file must be named `keystore`) and the Hazelcast trust store (file must be named `truststore`).
 
 ```
-"tlsArchiveUrl": "<archive-url>"
+{
+    "hazelcast-pcf": {
+        "tlsArchiveUrl": "<archive-url>"
+    }
+}
 ```
 
 ### <a id='example-config'></a> Example Configuration
@@ -283,26 +284,25 @@ The following snippet contains the relevant parts of json configuration for enab
 
 ```
 {
-    "tlsArchiveUrl": "https://mydomain/myfiles/test.tgz",
-...
-    "networkConfig": {
-        "port": 5701,
-...
-        "join": {
-...
-        },
-        "sslConfig": {
+    "hazelcast-pcf": {
+        "tlsArchiveUrl": "https://mydomain/myfiles/test.tgz"
+    }
+    "hazelcast": {
+      "network": {
+          "ssl": {
             "enabled": true,
+            "factory-class-name": "com.hazelcast.nio.ssl.BasicSSLContextFactory",
             "properties": {
-              "protocol": "TLS",
-              "keyStorePassword": "123456",
-              "trustStorePassword": "123456",
               "keyManagerAlgorithm": "SunX509",
-              "trustManagerAlgorithm": "SunX509"
+              "keyStorePassword": 123456,
+              "protocol": "TLS",
+              "trustManagerAlgorithm": "SunX509",
+              "trustStorePassword": 123456
             }
+          }
         }
-    },
-...
+      }
+    }
 }
 ```
 
@@ -314,18 +314,15 @@ The OpenSSL libraries and supporting artifacts are already included with Hazelca
 
 ```
 {
-...
-    "networkConfig": {
-...
-        "sslConfig": {
-            "enabled": true,
-            "factoryClassName": "com.hazelcast.nio.ssl.OpenSSLEngineFactory",
-            "properties": {
-...
-            }
-        }
-    },
-...
+  "hazelcast": {
+    "network": {
+      "ssl": {
+        "enabled": true,
+        "factory-class-name": "com.hazelcast.nio.ssl.OpenSSLEngineFactory",
+        "properties": {}
+      }
+    }
+  }
 }
 ```
 
@@ -369,8 +366,12 @@ In order to enable the REST API, you must add the following property to your `js
 configuration:
 
 ```
-"properties":{
-  "hazelcast.rest.enabled":true
+{
+	"hazelcast": {
+    "properties": {
+		  "hazelcast.rest.enabled": true
+    }
+  }
 }
 ```
 
