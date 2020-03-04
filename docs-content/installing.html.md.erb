@@ -1,19 +1,19 @@
 ---
-title: Installing and Configuring Hazelcast IMDG Enterprise for Pivotal Platform
+title: Installing and Configuring Hazelcast IMDG Enterprise for VMware Tanzu
 owner: Partners
 ---
 
-This topic describes how to install and configure Hazelcast IMDG Enterprise for Pivotal Platform.
+This topic describes how to install and configure Hazelcast IMDG Enterprise for VMware Tanzu.
 
-Complete the following steps to download and install the Hazelcast IMDG Enterprise for Pivotal Platform tile on Ops Manager.
+Complete the following steps to download and install the Hazelcast IMDG Enterprise for VMware Tanzu tile on Ops Manager.
 
 1. Download the product file from [Pivotal Network](https://network.pivotal.io/products/hazelcast).
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
-1. Click **Add** next to the uploaded Hazelcast IMDG Enterprise for Pivotal Platform tile in the Ops Manager **Available Products** view to add it to your staging area.
+1. Click **Add** next to the uploaded Hazelcast IMDG Enterprise for VMware Tanzu tile in the Ops Manager **Available Products** view to add it to your staging area.
 
-1. Click the newly added **Hazelcast IMDG Enterprise for Pivotal Platform** tile.
+1. Click the newly added **Hazelcast IMDG Enterprise for VMware Tanzu** tile.
 
     <%= image_tag("tile.png") %>
 
@@ -26,9 +26,9 @@ Complete the following steps to download and install the Hazelcast IMDG Enterpri
 1. Click **First On-demand plan**. In the **Hazelcast on-demand plan** pane, do the following:
     1. Enter a **Plan name**.
     1. Enter a **Plan description**.
-    For an example of how the plan name and description appear on the command line, see [Step 1](using.html#marketplace) in the _Using Hazelcast IMDG Enterprise for Pivotal Platform_ topic.
+    For an example of how the plan name and description appear on the command line, see [Step 1](using.html#marketplace) in the _Using Hazelcast IMDG Enterprise for VMware Tanzu_ topic.
 
-1. Specify the number of **Hazelcast instances** for this plan. This property defines the number of Hazelcast instances to be created. It can be overridden for each service instance when creating a service instance by using `instanceCount` parameter. See [Step 2](using.html#create-service) in the _Using Hazelcast IMDG Enterprise for Pivotal Platform_ topic for more information.
+1. Specify the number of **Hazelcast instances** for this plan. This property defines the number of Hazelcast instances to be created. It can be overridden for each service instance when creating a service instance by using `instanceCount` parameter. See [Step 2](using.html#create-service) in the _Using Hazelcast IMDG Enterprise for VMware Tanzu_ topic for more information.
 
 1. Select a **Hazelcast VM type**. Choose a suitable VM type according to your data size and processing power requirements.
 
@@ -39,15 +39,15 @@ Complete the following steps to download and install the Hazelcast IMDG Enterpri
 1. Click **Save**.
     <%= image_tag("first_plan.png") %>
 
-1. If you want to modify the additional Hazelcast IMDG Enterprise for Pivotal Platform plans, repeat the step above to configure the second and third on-demand plans.
+1. If you want to modify the additional Hazelcast IMDG Enterprise for VMware Tanzu plans, repeat the step above to configure the second and third on-demand plans.
 
 1. Click **Errands** and ensure that both **Register on-demand broker** and **Deregister on-demand broker** are selected. These are necessary to create and destroy Hazelcast service instances.
     <%= image_tag("errands.png") %>
 
-1. Click **Resource Config** and review the IaaS resources used by the Hazelcast IMDG Enterprise for Pivotal Platform components. Do not modify these default settings.
+1. Click **Resource Config** and review the IaaS resources used by the Hazelcast IMDG Enterprise for VMware Tanzu components. Do not modify these default settings.
     <%= image_tag("resource_config.png") %>
 
 1. Click **Stemcell** and, if necessary, import the required stemcell.
     <%= image_tag("stemcell.png") %>
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to complete the installation of Hazelcast IMDG Enterprise for Pivotal Platform.
+1. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to complete the installation of Hazelcast IMDG Enterprise for VMware Tanzu.
