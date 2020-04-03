@@ -5,9 +5,9 @@
 :subnav_templates:
   hazelcast: hazelcast_subnav
 :template_variables: 
-:local_repo_dir: "/Users/jday/workspace/docs-hazelcast"
+:local_repo_dir: "/workspace"
 :workspace: !ruby/object:Pathname
-  path: "/Users/jday/workspace/docs-hazelcast/docs-book/output/master_middleman/source"
+  path: "/workspace/docs-book/output/master_middleman/source"
 :feedback_enabled: 
 :repo_link_enabled: true
 :repo_links:
