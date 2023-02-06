@@ -13,13 +13,13 @@ Follow these steps to create an instance of the Hazelcast service based on an av
 
 1. To check availability of Hazelcast Platform Enterprise for VMware Tanzu, run the following command:
 
-    <pre class="terminal">
+```
 $ cf marketplace
 Getting services from marketplace in org system / space system as admin...
 OK<br>
 service         plans                            description
 hazelcast       small, medium, large    Hazelcast Service
-    </pre>
+```
 
 ## <a id="create-service"></a> Create and Bind a Service to Your App
 
@@ -38,13 +38,15 @@ hazelcast       small, medium, large    Hazelcast Service
     ```
     $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME -c hazelcast.json
     ```
+
     For example:
-    <pre class="terminal">
-$ cf create-service hazelcast small hz-cluster -c hazelcast.json
-Creating service instance hz-cluster in org system / space system as admin...
-OK<br>
+
+  ```
+  $ cf create-service hazelcast small hz-cluster -c hazelcast.json
+  Creating service instance hz-cluster in org system / space system as admin...
+  OK
 Create in progress. Use 'cf services' or 'cf service hz-cluster' to check operation status.
-    </pre>
+  ```
 
     You can create 2 nodes Hazelcast cluster only with one line command as well:
 
@@ -59,11 +61,13 @@ Create in progress. Use 'cf services' or 'cf service hz-cluster' to check operat
     $ cf bind-service MY-APPLICATION SERVICE_INSTANCE_NAME
     $ cf restage MY-APPLICATION
     ```
+
     For example,
-    <pre class="terminal">
-$ cf bind-service myapp hz-cluster
-$ cf restage myapp
-    </pre>
+
+    ```
+    $ cf bind-service myapp hz-cluster
+    $ cf restage myapp
+    ```
 
 1. Start using the Hazelcast Platform Enterprise. Necessary parameters are passed to your application in `VCAP_SERVICES` environment variable. See [this sample Hazelcast Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration) for further information.
 
