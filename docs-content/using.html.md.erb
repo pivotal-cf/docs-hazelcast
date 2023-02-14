@@ -35,11 +35,11 @@ Follow these steps to create an instance of the Hazelcast service based on an av
 
 1. To create a cluster, run the following command:
 
-    ```
-    $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME -c hazelcast.json
-    ```
+  ```
+  $ cf create-service hazelcast PLAN SERVICE_INSTANCE_NAME -c hazelcast.json
+  ```
 
-    For example:
+  For example:
 
   ```
   $ cf create-service hazelcast small hz-cluster -c hazelcast.json
@@ -48,26 +48,25 @@ Follow these steps to create an instance of the Hazelcast service based on an av
 Create in progress. Use 'cf services' or 'cf service hz-cluster' to check operation status.
   ```
 
-    You can create 2 nodes Hazelcast cluster only with one line command as well:
+  You can create 2 nodes Hazelcast cluster only with one line command as well:
 
-      ```
-      $ cf cs hazelcast PLAN SERVICE_INSTANCE_NAME -c '{"hazelcast": {"license-key": "PUT_LICENSE_HERE"}}'
-      ```
-
+  ```
+  $ cf cs hazelcast PLAN SERVICE_INSTANCE_NAME -c '{"hazelcast": {"license-key": "PUT_LICENSE_HERE"}}'
+  ```
 
 1. To bind the service to your app, run the following commands:
 
-    ```
-    $ cf bind-service MY-APPLICATION SERVICE_INSTANCE_NAME
-    $ cf restage MY-APPLICATION
-    ```
+  ```
+  $ cf bind-service MY-APPLICATION SERVICE_INSTANCE_NAME
+  $ cf restage MY-APPLICATION
+  ```
 
-    For example,
+  For example,
 
-    ```
-    $ cf bind-service myapp hz-cluster
-    $ cf restage myapp
-    ```
+  ```
+  $ cf bind-service myapp hz-cluster
+  $ cf restage myapp
+  ```
 
 1. Start using the Hazelcast Platform Enterprise. Necessary parameters are passed to your application in `VCAP_SERVICES` environment variable. See [this sample Hazelcast Spring Boot application](https://github.com/hazelcast/hazelcast-code-samples/tree/master/hazelcast-integration/pcf-integration) for further information.
 
